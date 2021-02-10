@@ -38,6 +38,10 @@ PHP imports formatter for Visual Studio Code.
 
 ## Release Notes
 
+### 0.1.5
+
+* Finally done with GitHub Actions
+
 ### 0.1.4
 
 * Use Github Actions instead of Travis CI for deployment
