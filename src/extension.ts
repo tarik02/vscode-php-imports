@@ -1,4 +1,3 @@
-import * as detectIndent from 'detect-indent'
 import * as PhpImports from 'php-imports'
 import * as vscode from 'vscode'
 
@@ -23,10 +22,8 @@ export function activate(context: vscode.ExtensionContext): void {
 				return
 			}
 
-			const { indent } = detectIndent(event.document.getText())
-
 			event.waitUntil((async () => {
-				const edit = await prepareEditForDocument(event.document, indent.length > 0 ? indent : '    ')
+				const edit = await prepareEditForDocument(event.document, detectIndent(event.document.getText()) ?? '    ')
 
 				if (!edit) {
 					return []
@@ -143,4 +140,26 @@ async function prepareEditForDocument(editorDocument: vscode.TextDocument, inden
 		end: endOffset,
 		replacement,
 	}
+}
+
+function detectIndent(source: string): string | undefined {
+	const re = /^([\t ]+)(private|public|protected)/gm
+	const indents: Record<string, number> = {}
+
+	let match
+	while ((match = re.exec(source)) !== null) {
+		indents[match[1]] = (indents[match[1]] ?? 0) + 1
+	}
+
+	let maxCount = 0
+	let maxIndent = undefined
+
+	for (const [indent, count] of Object.entries(indents)) {
+		if (count > maxCount) {
+			maxCount = count
+			maxIndent = indent
+		}
+	}
+
+	return maxIndent
 }

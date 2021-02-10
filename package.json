@@ -185,7 +185,6 @@
 		"webpack-cli": "^4.2.0"
 	},
 	"dependencies": {
-		"detect-indent": "^6.0.0",
 		"php-imports": "0.1.1"
 	}
 }
