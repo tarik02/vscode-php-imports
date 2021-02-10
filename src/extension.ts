@@ -1,3 +1,4 @@
+import * as detectIndent from 'detect-indent'
 import * as PhpImports from 'php-imports'
 import * as vscode from 'vscode'
 
@@ -22,8 +23,10 @@ export function activate(context: vscode.ExtensionContext): void {
 				return
 			}
 
+			const { indent } = detectIndent(event.document.getText())
+
 			event.waitUntil((async () => {
-				const edit = await prepareEditForDocument(event.document, '  ')
+				const edit = await prepareEditForDocument(event.document, indent.length > 0 ? indent : '    ')
 
 				if (!edit) {
 					return []

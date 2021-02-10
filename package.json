@@ -5,8 +5,8 @@
 	"publisher": "tarik02",
 	"version": "0.1.0",
 	"repository": {
-			"type": "git",
-			"url": "https://github.com/Tarik02/vscode-php-imports"
+		"type": "git",
+		"url": "https://github.com/Tarik02/vscode-php-imports"
 	},
 	"engines": {
 		"vscode": "^1.52.0"
@@ -180,6 +180,7 @@
 		"webpack-cli": "^4.2.0"
 	},
 	"dependencies": {
+		"detect-indent": "^6.0.0",
 		"php-imports": "^0.1.0"
 	}
 }
