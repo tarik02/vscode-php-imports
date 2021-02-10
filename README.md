@@ -10,13 +10,17 @@ PHP imports formatter for Visual Studio Code.
 
 * `php-imports.formatOnSave`: Automatically format imports before saving PHP file.
 * `php-imports.order`: Order of import sets and empty lines between them. An array of enums with possible values:
-	- `singleUses.class`
 	- `emptyLine`
+	- `all.all`
+	- `all.class`
+	- `all.function`
+	- `all.const`
+	- `singleUses.all`
+	- `singleUses.class`
 	- `singleUses.function`
 	- `singleUses.const`
-	- `emptyLine`
+	- `groupedUses.all`
 	- `groupedUses.class`
-	- `emptyLine`
 	- `groupedUses.function`
 	- `groupedUses.const`
 * `php-imports.sort.order`: Order of first-level imports. Possible values: `default` (alphabetical) or `natural` (first longest, alphabetical).

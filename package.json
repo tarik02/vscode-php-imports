@@ -40,6 +40,10 @@
 						"type": "string",
 						"enum": [
 							"emptyLine",
+							"all.all",
+							"all.class",
+							"all.function",
+							"all.const",
 							"singleUses.all",
 							"singleUses.class",
 							"singleUses.function",
@@ -181,6 +185,6 @@
 	},
 	"dependencies": {
 		"detect-indent": "^6.0.0",
-		"php-imports": "^0.1.0"
+		"php-imports": "0.1.1"
 	}
 }
