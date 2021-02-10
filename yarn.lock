@@ -2329,10 +2329,10 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
 
-php-imports@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/php-imports/-/php-imports-0.1.1.tgz#0f4434f8bb0c7806c9c86a5b83bd38c67618f8f9"
-  integrity sha512-LG/NS5bDpKVIKvjTM9Wyf7dfZITGFJUTRjEODI2fowUh4EM5YP6VV9gBIpuajRNLynI+nmJYj31RpPljho2gQg==
+php-imports@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/php-imports/-/php-imports-0.1.2.tgz#41c4ba0e6825eba39fe842b82e82546759f3ad37"
+  integrity sha512-9iUkIBgTod3vfnp4MDs8M4I3zlF8I5xgotzMI6OrpgqEGvuUb1q658TttVh4cVEAuUVZ5ZOdbwu0yXWfdLylAA==
   dependencies:
     "@types/pegjs" "^0.10.2"
 

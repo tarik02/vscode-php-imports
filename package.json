@@ -185,6 +185,6 @@
 		"webpack-cli": "^4.2.0"
 	},
 	"dependencies": {
-		"php-imports": "0.1.1"
+		"php-imports": "0.1.2"
 	}
 }
