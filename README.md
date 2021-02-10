@@ -34,6 +34,10 @@ PHP imports formatter for Visual Studio Code.
 
 ## Release Notes
 
+### 0.1.1
+
+Detect file indentation when formatting before saving
+
 ### 0.1.0
 
 Initial release
