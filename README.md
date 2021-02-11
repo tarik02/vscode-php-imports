@@ -38,6 +38,10 @@ PHP imports formatter for Visual Studio Code.
 
 ## Release Notes
 
+### 0.1.6
+
+* Disable formatting in files without uses
+
 ### 0.1.5
 
 * Finally done with GitHub Actions
