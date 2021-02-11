@@ -88,7 +88,13 @@ async function prepareEditForDocument(editorDocument: vscode.TextDocument, inden
 	const text = editorDocument.getText()
 
 	const document = PhpImports.Grammar.fromSource(text)
+
 	const flat = PhpImports.Flat.fromGrammar(document.uses)
+
+	if (flat.length === 0) {
+		return undefined
+	}
+
 	const tree = PhpImports.Tree.fromFlat(flat)
 
 	const grouped = PhpImports.Group.create()
