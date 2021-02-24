@@ -38,6 +38,10 @@ PHP imports formatter for Visual Studio Code.
 
 ## Release Notes
 
+### 0.1.7
+
+* Fix issue with namespaces or imports containing digits
+
 ### 0.1.6
 
 * Disable formatting in files without uses
