@@ -1,4 +1,7 @@
+import * as multimatch from 'multimatch'
+import * as path from 'path'
 import * as PhpImports from 'php-imports'
+import { TextDecoder } from 'util'
 import * as vscode from 'vscode'
 
 
@@ -23,7 +26,7 @@ export function activate(context: vscode.ExtensionContext): void {
 			}
 
 			event.waitUntil((async () => {
-				const edit = await prepareEditForDocument(event.document, detectIndent(event.document.getText()) ?? '    ')
+				const edit = await prepareEditForDocument(event.document)
 
 				if (!edit) {
 					return []
@@ -83,89 +86,124 @@ async function formatImportsInEditor(editor: vscode.TextEditor): Promise<boolean
 	})
 }
 
-async function prepareEditForDocument(editorDocument: vscode.TextDocument, indent: string): Promise<{ start: number, end: number, replacement: string } | undefined> {
-	const configuration = vscode.workspace.getConfiguration('php-imports')
-	const text = editorDocument.getText()
+async function createConfigurationFromWorkspace(
+	fileUri: vscode.Uri | undefined = undefined,
+): Promise<PhpImports.PhpImportsRc | undefined> {
+	const foldersToCheck = []
 
-	const document = PhpImports.Grammar.fromSource(text)
-
-	const flat = PhpImports.Flat.fromGrammar(document.uses)
-
-	if (flat.length === 0) {
-		return undefined
+	if (fileUri !== undefined) {
+		const folder = vscode.workspace.getWorkspaceFolder(fileUri)
+		if (folder !== undefined) {
+			foldersToCheck.push(folder)
+		}
+	} else {
+		foldersToCheck.push(...(vscode.workspace.workspaceFolders ?? []))
 	}
 
-	const tree = PhpImports.Tree.fromFlat(flat)
+	for (const folder of foldersToCheck) {
+		try {
+			const rc = PhpImports.parseRcFromObject(
+				JSON.parse(
+					(new TextDecoder('utf-8')).decode(
+						await vscode.workspace.fs.readFile(vscode.Uri.joinPath(folder.uri, '.phpimportsrc')),
+					),
+				),
+			)
 
-	const grouped = PhpImports.Group.create()
+			return {
+				...rc,
+				root: path.resolve(folder.uri.path, rc.root),
+			}
+		} catch (e) {
+			if (e instanceof vscode.FileSystemError && e.code === 'FileNotFound') {
+				continue
+			}
 
-	if (configuration.get('psr12.enable')) {
-		PhpImports.Group.collectPsr12(tree, grouped, {
-			minNestedGroupNestedUsesCount: configuration.get('psr12.minNestedGroupNestedUsesCount'),
-			minNestedGroupUsesCount: configuration.get('psr12.minNestedGroupUsesCount'),
-			minGroupUsesCount: configuration.get('psr12.minGroupUsesCount'),
-			isolateModifiers: configuration.get('psr12.isolateModifiers'),
-		})
-	}
-
-	if (configuration.get('custom.enable')) {
-		PhpImports.Group.collectCustom(tree, grouped, {
-			include: configuration.get('custom.include'),
-			exclude: configuration.get('custom.exclude'),
-		})
-	}
-
-	PhpImports.Group.collectAllToSingles(tree, grouped)
-
-	PhpImports.Group.sort(grouped, {
-		order: configuration.get('sort.order'),
-		nestedOrder: configuration.get('sort.nestedOrder'),
-	})
-
-	const printed = PhpImports.Print.print(grouped, {
-		order: configuration.get('order'),
-		indent,
-	})
-
-	const prefix = text.substring(0, document.uses.location.start.offset)
-	const suffix = text.substring(document.uses.location.end.offset)
-
-	const startOffset = document.uses.location.start.offset - (prefix.length - prefix.trimEnd().length)
-	const endOffset = document.uses.location.end.offset + (suffix.length - suffix.trimStart().length)
-
-	const emptyLinesAfterImports = configuration.get<number>('print.emptyLinesAfterImports', 1)
-
-	const replacement = `\n\n${printed}\n` + '\n'.repeat(emptyLinesAfterImports)
-
-	if (text.substring(startOffset, endOffset) === replacement) {
-		return undefined
-	}
-
-	return {
-		start: startOffset,
-		end: endOffset,
-		replacement,
-	}
-}
-
-function detectIndent(source: string): string | undefined {
-	const re = /^([\t ]+)(private|public|protected)/gm
-	const indents: Record<string, number> = {}
-
-	let match
-	while ((match = re.exec(source)) !== null) {
-		indents[match[1]] = (indents[match[1]] ?? 0) + 1
-	}
-
-	let maxCount = 0
-	let maxIndent = undefined
-
-	for (const [indent, count] of Object.entries(indents)) {
-		if (count > maxCount) {
-			maxCount = count
-			maxIndent = indent
+			throw e
 		}
 	}
 
-	return maxIndent
+	return undefined
+}
+
+function createConfigurationFromVscodeSettings(fileUri: vscode.Uri | undefined = undefined): PhpImports.PhpImportsRc {
+	const configuration = vscode.workspace.getConfiguration('php-imports')
+
+	const foldersToCheck = []
+
+	if (fileUri !== undefined) {
+		const folder = vscode.workspace.getWorkspaceFolder(fileUri)
+		if (folder !== undefined) {
+			foldersToCheck.push(folder)
+		}
+	} else {
+		foldersToCheck.push(...(vscode.workspace.workspaceFolders ?? []))
+	}
+
+	return PhpImports.parseRcFromObject({
+		root: foldersToCheck[0]?.uri.path,
+
+		include: [
+			'**/*.php',
+		],
+
+		order: configuration.get('order'),
+
+		sort: {
+			order: configuration.get('sort.order'),
+			nestedOrder: configuration.get('sort.nestedOrder'),
+		},
+
+		print: {
+			emptyLinesAfterImports: configuration.get<number>('print.emptyLinesAfterImports', 1),
+		},
+
+		psr12: {
+			enable: configuration.get('psr12.enable'),
+			isolateModifiers: configuration.get('psr12.isolateModifiers'),
+			minNestedGroupNestedUsesCount: configuration.get('psr12.minNestedGroupNestedUsesCount'),
+			minNestedGroupUsesCount: configuration.get('psr12.minNestedGroupUsesCount'),
+			minGroupUsesCount: configuration.get('psr12.minGroupUsesCount'),
+		},
+
+		custom: {
+			enable: configuration.get('custom.enable'),
+			isolateModifiers: configuration.get('custom.isolateModifiers'),
+			include: configuration.get('custom.include'),
+			exclude: configuration.get('custom.exclude'),
+		},
+	} as Partial<PhpImports.PhpImportsRc>)
+}
+
+async function prepareEditForDocument(editorDocument: vscode.TextDocument, indent: string | undefined = undefined): Promise<{ start: number, end: number, replacement: string } | undefined> {
+	const text = editorDocument.getText()
+
+	let configuration: PhpImports.PhpImportsRc | undefined
+
+	try {
+		configuration = await createConfigurationFromWorkspace(editorDocument.uri)
+	} catch (e) {
+		console.error(e)
+		vscode.window.showErrorMessage('Failed to read .phpimportsrc file')
+	}
+
+	configuration = configuration ?? createConfigurationFromVscodeSettings(editorDocument.uri)
+
+	if (
+		multimatch(
+			path.relative(configuration.root, editorDocument.uri.path),
+			[
+				...configuration.include,
+				...configuration.exclude.map(it => '!' + it),
+			],
+		).length === 0
+	) {
+		return undefined
+	}
+
+	return PhpImports.processText(
+		text,
+		configuration,
+		indent,
+	)
 }
