@@ -38,6 +38,11 @@ PHP imports formatter for Visual Studio Code.
 
 ## Release Notes
 
+### 0.2.0
+
+* `.phpimportsrc` file support
+* Allow trailing comma in group uses when parsing
+
 ### 0.1.7
 
 * Fix issue with namespaces or imports containing digits
