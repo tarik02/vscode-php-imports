@@ -4,6 +4,7 @@ PHP imports formatter for Visual Studio Code.
 
 ## Commands
 
+* `vscode-php-imports.init`: PHP Imports: Init
 * `vscode-php-imports.format`: PHP Imports: Format
 
 ## Extension Settings
@@ -38,6 +39,14 @@ PHP imports formatter for Visual Studio Code.
 * `php-imports.unused.enable`: Clean up unused imports.
 
 ## Release Notes
+
+### 0.3.0
+
+* Added init command that creates `.phpimportsrc` config from current workspace configuration
+* Added option to clean unused imports
+* Improved `.phpimportsrc` support
+* Better error and warning reporting
+* Updated php-imports library
 
 ### 0.2.0
 
