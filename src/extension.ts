@@ -175,40 +175,49 @@ async function prepareEditForDocument(
 	withFeedback = false,
 ): Promise<{ start: number, end: number, replacement: string } | undefined> {
 	try {
-	const text = editorDocument.getText()
+		const text = editorDocument.getText()
 
-	let configuration: PhpImports.PhpImportsRc | undefined
+		let configuration: PhpImports.PhpImportsRc | undefined
 
-	try {
-		configuration = await createConfigurationFromWorkspace(editorDocument.uri)
-	} catch (e) {
-		console.error(e)
-		vscode.window.showErrorMessage('Failed to read .phpimportsrc file')
-	}
+		try {
+			configuration = await createConfigurationFromWorkspace(editorDocument.uri)
+		} catch (e) {
+			console.error(e)
+			vscode.window.showErrorMessage('Failed to read .phpimportsrc file')
+		}
 
-	configuration = configuration ?? createConfigurationFromVscodeSettings(editorDocument.uri)
+		configuration = configuration ?? createConfigurationFromVscodeSettings(editorDocument.uri)
 
-	if (
-		multimatch(
-			path.relative(configuration.root, editorDocument.uri.path),
-			[
-				...configuration.include,
-				...configuration.exclude.map(it => '!' + it),
-			],
-		).length === 0
-	) {
+		if (
+			multimatch(
+				path.relative(configuration.root, editorDocument.uri.path),
+				[
+					...configuration.include,
+					...configuration.exclude.map(it => '!' + it),
+					...configuration.exclude.map(it => '!' + it + '/**/*'),
+					...configuration.exclude.map(it => (it.startsWith('/')
+						? '!' + path.relative(configuration!.root, it.substring(1))
+						: '!**/' + it
+					)),
+					...configuration.exclude.map(it => (it.startsWith('/')
+						? '!' + path.relative(configuration!.root, it.substring(1))
+						: '!**/' + it + '/**/*'
+					)),
+				],
+			).length === 0
+		) {
 			if (withFeedback) {
 				vscode.window.showWarningMessage('This file is ignored with .phpimportsrc')
 			}
 
-		return undefined
-	}
+			return undefined
+		}
 
 		const result = PhpImports.processText(
-		text,
-		configuration,
-		indent,
-	)
+			text,
+			configuration,
+			indent,
+		)
 
 		if (withFeedback && result === undefined) {
 			vscode.window.showInformationMessage('Imports are already formatted')
