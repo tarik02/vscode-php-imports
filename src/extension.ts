@@ -273,6 +273,15 @@ async function prepareEditForDocument(
 			text,
 			configuration,
 			indent,
+			{
+				onWarning(description, error) {
+					if (error !== undefined) {
+						vscode.window.showErrorMessage(description + '\n' + error)
+					} else {
+						vscode.window.showWarningMessage(description)
+					}
+				},
+			},
 		)
 
 		if (withFeedback && result === undefined) {
