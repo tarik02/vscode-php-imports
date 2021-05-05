@@ -1120,6 +1120,11 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
+doc-parser@^0.4.9:
+  version "0.4.9"
+  resolved "https://registry.yarnpkg.com/doc-parser/-/doc-parser-0.4.9.tgz#42c19bd22d452f171ac5d560a1d5af3bdfecfb63"
+  integrity sha512-E8pG7A2oi/wySV3odTZ0GA3YrFqp0WaptyeuQMhAwbDwYUVcKtgdA2e/rdEU/+dyBDTdZ3+eZVrkquooFyZy9g==
+
 doctrine@1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-1.5.0.tgz#379dce730f6166f76cefa4e6707a159b02c5a6fa"
@@ -2743,10 +2748,10 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
 
-php-imports@0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/php-imports/-/php-imports-0.2.2.tgz#a8fedb57eac39e401a99c2d5fd949303652f1c09"
-  integrity sha512-fKmWeythsAxy85uZkUBVLL7qXDwXHmslgFrPwrkj5JbERC82K9h8GbqPOX1uovaQIAJnMbqS98Kzmyz1SP/iIA==
+php-imports@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/php-imports/-/php-imports-0.3.1.tgz#cace80657b1b679bd80d4fec4f9cb4e7e92e1d89"
+  integrity sha512-8gb+XhjdPRUmD7PeHqj0hRzwC4NU4bJJIezh9ZjU5NFkSwbd/LeP1QpyXfrBCnqDT66pLpJmN+f3FAC121ln+A==
   dependencies:
     "@oclif/command" "^1.8.0"
     "@oclif/config" "^1.17.0"
@@ -2756,10 +2761,17 @@ php-imports@0.2.2:
     "@supercharge/promise-pool" "^1.7.0"
     "@types/pegjs" "^0.10.2"
     cli-ux "^5.5.1"
+    doc-parser "^0.4.9"
     fp-ts "^2.10.2"
     globby "^11.0.3"
     io-ts "^2.2.16"
     io-ts-fuzzy "^0.1.2"
+    php-parser "^3.0.3"
+
+php-parser@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/php-parser/-/php-parser-3.0.3.tgz#287779ea8a273ec5cf926f28e5f38ffa4ad32d4a"
+  integrity sha512-WjbrtYrwmLY9hpoKoq1+mVqJhT0dEVDZRWSpNIw2MpTw3VM/K4C6e0WR4KlU6G/XROkV7tpH4NesV2dDiPxqaw==
 
 picomatch@^2.0.4, picomatch@^2.0.5, picomatch@^2.2.1:
   version "2.2.2"

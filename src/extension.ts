@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext): void {
 				return
 			}
 
-			await formatImportsInEditorWithFeedback(editor)
+			await formatImportsInEditor(editor)
 		}),
 
 		vscode.workspace.onWillSaveTextDocument(event => {
@@ -50,32 +50,18 @@ export function deactivate(): void {
 	//
 }
 
-async function formatImportsInEditorWithFeedback(editor: vscode.TextEditor): Promise<void> {
-	try {
-		if (await formatImportsInEditor(editor)) {
-			vscode.window.showInformationMessage('Imports successfully formatted')
-		} else {
-			vscode.window.showInformationMessage('Imports are already formatted')
-		}
-	} catch (err) {
-		console.error(err)
-
-		vscode.window.showErrorMessage('Failed to format imports')
-	}
-}
-
-async function formatImportsInEditor(editor: vscode.TextEditor): Promise<boolean> {
+async function formatImportsInEditor(editor: vscode.TextEditor): Promise<void> {
 	const indent = editor.options.insertSpaces
 		? ' '.repeat(editor.options.tabSize as number)
 		: '\t'
 
-	const edit = await prepareEditForDocument(editor.document, indent)
+	const edit = await prepareEditForDocument(editor.document, indent, true)
 
 	if (!edit) {
-		return false
+		return
 	}
 
-	return await editor.edit(builder => {
+	const status = await editor.edit(builder => {
 		builder.replace(
 			new vscode.Range(
 				editor.document.positionAt(edit.start),
@@ -84,6 +70,10 @@ async function formatImportsInEditor(editor: vscode.TextEditor): Promise<boolean
 			edit.replacement,
 		)
 	})
+
+	if (status) {
+		await vscode.window.showInformationMessage('Imports successfully formatted')
+	}
 }
 
 async function createConfigurationFromWorkspace(
@@ -172,10 +162,19 @@ function createConfigurationFromVscodeSettings(fileUri: vscode.Uri | undefined =
 			include: configuration.get('custom.include'),
 			exclude: configuration.get('custom.exclude'),
 		},
+
+		unused: {
+			enable: configuration.get('unused.enable'),
+		},
 	} as Partial<PhpImports.PhpImportsRc>)
 }
 
-async function prepareEditForDocument(editorDocument: vscode.TextDocument, indent: string | undefined = undefined): Promise<{ start: number, end: number, replacement: string } | undefined> {
+async function prepareEditForDocument(
+	editorDocument: vscode.TextDocument,
+	indent: string | undefined = undefined,
+	withFeedback = false,
+): Promise<{ start: number, end: number, replacement: string } | undefined> {
+	try {
 	const text = editorDocument.getText()
 
 	let configuration: PhpImports.PhpImportsRc | undefined
@@ -198,12 +197,27 @@ async function prepareEditForDocument(editorDocument: vscode.TextDocument, inden
 			],
 		).length === 0
 	) {
+			if (withFeedback) {
+				vscode.window.showWarningMessage('This file is ignored with .phpimportsrc')
+			}
+
 		return undefined
 	}
 
-	return PhpImports.processText(
+		const result = PhpImports.processText(
 		text,
 		configuration,
 		indent,
 	)
+
+		if (withFeedback && result === undefined) {
+			vscode.window.showInformationMessage('Imports are already formatted')
+		}
+
+		return result
+	} catch (err) {
+		console.error(err)
+
+		vscode.window.showErrorMessage('Failed to format imports: ' + err)
+	}
 }

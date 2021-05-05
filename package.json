@@ -156,6 +156,11 @@
 					"description": "A list of namespaces that should never be grouped.",
 					"type": "array",
 					"default": []
+				},
+				"php-imports.unused.enable": {
+					"description": "Clean up unused imports",
+					"type": "boolean",
+					"default": false
 				}
 			}
 		}
@@ -194,6 +199,6 @@
 	},
 	"dependencies": {
 		"multimatch": "^5.0.0",
-		"php-imports": "0.2.2"
+		"php-imports": "0.3.1"
 	}
 }

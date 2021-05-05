@@ -31,10 +31,11 @@ PHP imports formatter for Visual Studio Code.
 * `php-imports.psr12.minNestedGroupNestedUsesCount`: Minimum count of nested uses to make a nested group with them.
 * `php-imports.psr12.minNestedGroupUsesCount`: Mimimum count of uses to make a nested group with them.
 * `php-imports.psr12.minGroupUsesCount`: Mimimum count of uses of same namespace to make a group with them.
-* `php-imports.custom.enable`: Enable custom imports formatting
+* `php-imports.custom.enable`: Enable custom imports formatting.
 * `php-imports.custom.isolateModifiers`: Whether to put different modifiers (without modifier, const and function) to different groups.
 * `php-imports.custom.include`: A list of namespaces that should always be grouped. Can be used with wildcards (*) and double wildcards (**).
 * `php-imports.custom.exclude`: A list of namespaces that should never be grouped.
+* `php-imports.unused.enable`: Clean up unused imports.
 
 ## Release Notes
 
