@@ -1,11 +1,67 @@
 import * as multimatch from 'multimatch'
 import * as path from 'path'
 import * as PhpImports from 'php-imports'
-import { TextDecoder } from 'util'
+import { TextDecoder, TextEncoder } from 'util'
 import * as vscode from 'vscode'
 
 
 export function activate(context: vscode.ExtensionContext): void {
+	context.subscriptions.push(
+		vscode.commands.registerCommand('vscode-php-imports.init', async () => {
+			const activeDocumentUri = vscode.window.activeTextEditor?.document.uri
+
+			const workspaceFolder = (activeDocumentUri
+				? vscode.workspace.getWorkspaceFolder(activeDocumentUri) ?? vscode.workspace.workspaceFolders?.[0]
+				: vscode.workspace.workspaceFolders?.[0]
+			)
+
+			if (workspaceFolder === undefined) {
+				vscode.window.showErrorMessage('There is no open project')
+				return
+			}
+
+			const rcFileUri = vscode.Uri.joinPath(workspaceFolder.uri, '.phpimportsrc')
+
+			try {
+				await vscode.workspace.fs.stat(rcFileUri)
+
+				vscode.window.showErrorMessage('File .phpimportsrc already exists')
+
+				await vscode.window.showTextDocument(
+					await vscode.workspace.openTextDocument(rcFileUri),
+				)
+
+				return
+			} catch (e) {
+				if (! (e instanceof vscode.FileSystemError && e.code === 'FileNotFound')) {
+					throw e
+				}
+			}
+
+			const phpImportsRc = {
+				...PhpImports.PhpImportsRc.encode(createConfigurationFromVscodeSettings()),
+				root: '.',
+			}
+
+			await vscode.workspace.fs.writeFile(
+				rcFileUri,
+				(new TextEncoder()).encode(
+					JSON.stringify(
+						phpImportsRc,
+						undefined,
+						4,
+					),
+				),
+			)
+
+			vscode.window.showInformationMessage('File .phpimportsrc successfully created')
+
+			await vscode.window.showTextDocument(
+				await vscode.workspace.openTextDocument(rcFileUri),
+			)
+		}),
+	)
+
 	context.subscriptions.push(
 		vscode.commands.registerCommand('vscode-php-imports.format', async () => {
 			const editor = vscode.window.activeTextEditor

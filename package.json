@@ -15,12 +15,17 @@
 		"Other"
 	],
 	"activationEvents": [
+		"onCommand:vscode-php-imports.init",
 		"onCommand:vscode-php-imports.format",
 		"onLanguage:php"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
+			{
+				"command": "vscode-php-imports.init",
+				"title": "PHP Imports: Init"
+			},
 			{
 				"command": "vscode-php-imports.format",
 				"title": "PHP Imports: Format"
