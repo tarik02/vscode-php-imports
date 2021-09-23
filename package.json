@@ -204,6 +204,6 @@
 	},
 	"dependencies": {
 		"multimatch": "^5.0.0",
-		"php-imports": "0.3.1"
+		"php-imports": "0.4.0"
 	}
 }
