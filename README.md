@@ -40,6 +40,10 @@ PHP imports formatter for Visual Studio Code.
 
 ## Release Notes
 
+### 0.4.0
+
+* Added support for PHP `declare` syntax
+
 ### 0.3.0
 
 * Added init command that creates `.phpimportsrc` config from current workspace configuration
