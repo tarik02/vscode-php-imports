@@ -42,6 +42,15 @@ PHP imports formatter for Visual Studio Code.
 
 ## Release Notes
 
+### 0.5.0
+
+* Fixed release notes
+
+### 0.5.0
+
+* Updated php-imports library to 0.5.0
+* Added grouped imports wrapping configuration
+
 ### 0.4.0
 
 * Added support for PHP `declare` syntax
