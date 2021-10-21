@@ -42,7 +42,7 @@ PHP imports formatter for Visual Studio Code.
 
 ## Release Notes
 
-### 0.5.0
+### 0.5.1
 
 * Fixed release notes
 
