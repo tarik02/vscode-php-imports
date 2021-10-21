@@ -27,6 +27,8 @@ PHP imports formatter for Visual Studio Code.
 * `php-imports.sort.order`: Order of first-level imports. Possible values: `default` (alphabetical) or `natural` (first longest, alphabetical).
 * `php-imports.sort.nestedOrder`: Order of second-level imports. Possible values: `default` (alphabetical) or `natural` (first longest, alphabetical).
 * `php-imports.print.emptyLinesAfterImports`: Count of empty lines between last import and the declaration after it.
+* `php-imports.print.wrap.all`: If set to false, multiple imports will be placed in single line wrapped only after exceeding line limit.
+* `php-imports.print.wrap.limit`: Line length limit before starting wrapping grouped imports. Set to false if you want to remove line length limit.
 * `php-imports.psr12.enable`: Enable PSR-12 imports formatting.
 * `php-imports.psr12.isolateModifiers`: Whether to put different modifiers (without modifier, const and function) to different groups.
 * `php-imports.psr12.minNestedGroupNestedUsesCount`: Minimum count of nested uses to make a nested group with them.

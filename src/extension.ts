@@ -202,6 +202,12 @@ function createConfigurationFromVscodeSettings(fileUri: vscode.Uri | undefined =
 
 		print: {
 			emptyLinesAfterImports: configuration.get<number>('print.emptyLinesAfterImports', 1),
+			wrap: typeof configuration.get('print.wrap.limit') === 'boolean'
+				? configuration.get<boolean>('print.wrap.limit')
+				: {
+					limit: configuration.get<boolean>('print.wrap.limit'),
+					all: configuration.get<number>('print.wrap.all'),
+				},
 		},
 
 		psr12: {

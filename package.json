@@ -104,6 +104,20 @@
 					"minimum": 0,
 					"default": 1
 				},
+				"php-imports.print.wrap.all": {
+					"description": "If set to false, multiple imports will be placed in single line wrapped only after exceeding line limit.",
+					"type": "boolean",
+					"default": true
+				},
+				"php-imports.print.wrap.limit": {
+					"description": "Line length limit before starting wrapping grouped imports. Set to false if you want to remove line length limit.",
+					"type": [
+						"boolean",
+						"integer"
+					],
+					"minimum": 0,
+					"default": true
+				},
 				"php-imports.psr12.enable": {
 					"description": "Enable PSR-12 imports formatting.",
 					"type": "boolean",
@@ -204,6 +218,6 @@
 	},
 	"dependencies": {
 		"multimatch": "^5.0.0",
-		"php-imports": "0.4.0"
+		"php-imports": "0.5.0"
 	}
 }
