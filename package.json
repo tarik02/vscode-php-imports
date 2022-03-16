@@ -3,7 +3,7 @@
 	"displayName": "php-imports",
 	"description": "PHP imports formatter for Visual Studio Code",
 	"publisher": "tarik02",
-	"version": "0.5.1",
+	"version": "0.5.2",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Tarik02/vscode-php-imports"
@@ -218,6 +218,6 @@
 	},
 	"dependencies": {
 		"multimatch": "^5.0.0",
-		"php-imports": "0.5.0"
+		"php-imports": "0.5.1"
 	}
 }
