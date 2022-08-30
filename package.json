@@ -218,6 +218,6 @@
 	},
 	"dependencies": {
 		"multimatch": "^5.0.0",
-		"php-imports": "0.5.1"
+		"php-imports": "^0.5.2"
 	}
 }
