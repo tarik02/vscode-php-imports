@@ -42,6 +42,10 @@ PHP imports formatter for Visual Studio Code.
 
 ## Release Notes
 
+### 0.5.3
+
+* Updated php-imports library to 0.5.2
+
 ### 0.5.1
 
 * Fixed release notes
