@@ -2753,10 +2753,10 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
 
-php-imports@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/php-imports/-/php-imports-0.5.2.tgz#dd2894a6ded9f4a05ba7bee4c051a8b23cefe672"
-  integrity sha512-IBwkCQqrISXN6U1UuThrrCBMUGQl3tvTem2kCmYMIg7nXZuyog9FJq5O987fu5TM37zb+SJsiDlWcMVoUzZfXw==
+php-imports@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/php-imports/-/php-imports-0.5.3.tgz#5cf15c3eede350213e0b319beb357d18664143b4"
+  integrity sha512-l7SGON7zmyDkMJp64TUyMP+CukzjNvWFRMDH9O1GUj5ljif3e8J/BbITh1Wq/JYzM0oFva/DKo4DTAWJ/iCz+Q==
   dependencies:
     "@oclif/command" "^1.8.0"
     "@oclif/config" "^1.17.0"
